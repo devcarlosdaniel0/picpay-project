@@ -2,6 +2,7 @@ package com.projeto.picpay.controller;
 
 import com.projeto.picpay.domain.Wallet;
 import com.projeto.picpay.requests.WalletPostRequestBody;
+import com.projeto.picpay.requests.WalletPutRequestBody;
 import com.projeto.picpay.service.WalletService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,12 @@ public class WalletController {
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         walletService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> replace(@RequestBody @Valid WalletPutRequestBody walletPutRequestBody) {
+        walletService.replace(walletPutRequestBody);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
