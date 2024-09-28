@@ -2,7 +2,9 @@ package com.projeto.picpay;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
+@EnableFeignClients
 @SpringBootApplication
 public class PicpayApplication {
 
@@ -11,3 +13,5 @@ public class PicpayApplication {
 	}
 
 }
+
+
