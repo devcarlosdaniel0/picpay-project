@@ -1,6 +1,7 @@
 package com.projeto.picpay.service;
 
 import com.projeto.picpay.domain.Wallet;
+import com.projeto.picpay.domain.WalletType;
 import com.projeto.picpay.exception.WalletDataAlreadyExistsException;
 import com.projeto.picpay.exception.WalletIdNotFoundException;
 import com.projeto.picpay.mapper.WalletMapper;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +36,20 @@ public class WalletService {
         Wallet wallet = WalletMapper.INSTANCE.toWallet(walletPostRequestBody);
         return walletRepository.save(wallet);
     }
+
+    /**
+     * Valida se o tipo de usuário é permitido fazer transferências
+     * @param wallet
+     * @return true se o tipo for usuário
+     */
+    public boolean isTransferAllowedForWalletType(Wallet wallet) {
+        return wallet.getWalletType().equals(WalletType.USER);
+    }
+
+    public boolean isSenderBalanceEqualOrGreaterThan(Wallet sender, BigDecimal value) {
+        return sender.getBalance().compareTo(value) >= 0;
+    }
+
 
     public Wallet findByIdOrThrowWalletIdNotFoundException(Long id) {
         return walletRepository.findById(id).orElseThrow(() -> new WalletIdNotFoundException("Wallet ID not found"));
@@ -62,4 +78,6 @@ public class WalletService {
         walletToReplace.setId(walletDB.getId());
         walletRepository.save(walletToReplace);
     }
+
+
 }

@@ -1,8 +1,8 @@
 package com.projeto.picpay.service;
 
 import com.projeto.picpay.client.AuthorizationClient;
-import com.projeto.picpay.domain.Transfer;
 import com.projeto.picpay.exception.PicPayException;
+import com.projeto.picpay.requests.TransferPostRequestBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class AuthorizationService {
     private final AuthorizationClient authorizationClient;
 
-    public boolean isAuthorized(Transfer transfer) {
+    public boolean isAuthorized(TransferPostRequestBody transfer) {
         var response = authorizationClient.isAuthorized();
 
         if (!response.getStatusCode().equals(HttpStatus.OK)) {
