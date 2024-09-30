@@ -11,10 +11,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Log4j2
 public class NotificationService {
-    private NotificationClient notificationClient;
+    private final NotificationClient notificationClient;
 
     public void sendNotification(Transfer transfer) {
-
         try {
             log.info("Sending notification...");
             var response = notificationClient.sendNotification(transfer);

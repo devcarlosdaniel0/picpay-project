@@ -46,10 +46,15 @@ public class WalletService {
         return wallet.getWalletType().equals(WalletType.USER);
     }
 
+    /**
+     * Valida o saldo para ver se é suficiente
+     * @param sender
+     * @param value
+     * @return
+     */
     public boolean isSenderBalanceEqualOrGreaterThan(Wallet sender, BigDecimal value) {
         return sender.getBalance().compareTo(value) >= 0;
     }
-
 
     public Wallet findByIdOrThrowWalletIdNotFoundException(Long id) {
         return walletRepository.findById(id).orElseThrow(() -> new WalletIdNotFoundException("Wallet ID not found"));
@@ -78,6 +83,4 @@ public class WalletService {
         walletToReplace.setId(walletDB.getId());
         walletRepository.save(walletToReplace);
     }
-
-
 }
