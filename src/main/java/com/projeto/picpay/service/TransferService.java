@@ -2,10 +2,7 @@ package com.projeto.picpay.service;
 
 import com.projeto.picpay.domain.Transfer;
 import com.projeto.picpay.domain.Wallet;
-import com.projeto.picpay.exception.InsufficientBalanceException;
-import com.projeto.picpay.exception.TransactionIdNotFoundException;
-import com.projeto.picpay.exception.TransferNotAllowedForWalletTypeException;
-import com.projeto.picpay.exception.TransferNotAuthorizedException;
+import com.projeto.picpay.exception.*;
 import com.projeto.picpay.mapper.TransferMapper;
 import com.projeto.picpay.repository.TransferRepository;
 import com.projeto.picpay.requests.TransferPostRequestBody;
@@ -47,6 +44,10 @@ public class TransferService {
     }
 
     private void validateTransfer(TransferRequestBody transferRequestBody, Wallet sender) {
+        if (sender.getId().equals(transferRequestBody.reciverID())) {
+            throw new SenderEqualsToReciverIdException();
+        }
+
         if (!walletService.isTransferAllowedForWalletType(sender)) {
             throw new TransferNotAllowedForWalletTypeException();
         }
