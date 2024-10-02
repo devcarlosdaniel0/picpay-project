@@ -3,6 +3,8 @@ package com.projeto.picpay.controller;
 import com.projeto.picpay.domain.Wallet;
 import com.projeto.picpay.requests.WalletPostRequestBody;
 import com.projeto.picpay.requests.WalletPutRequestBody;
+import com.projeto.picpay.requests.WithdrawalOrDepositRequestDTO;
+import com.projeto.picpay.requests.WithdrawalOrDepositResponse;
 import com.projeto.picpay.service.WalletService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,16 @@ public class WalletController {
     @PostMapping
     public ResponseEntity<Wallet> createWallet(@RequestBody @Valid WalletPostRequestBody walletPostRequestBody) {
         return new ResponseEntity<>(walletService.createWallet(walletPostRequestBody), HttpStatus.CREATED);
+    }
+
+    @PostMapping(path = "/deposit")
+    public ResponseEntity<WithdrawalOrDepositResponse> deposit(@RequestBody @Valid WithdrawalOrDepositRequestDTO depositRequestDTO) {
+        return ResponseEntity.ok(walletService.deposit(depositRequestDTO));
+    }
+
+    @PostMapping(path = "/withdrawal")
+    public ResponseEntity<WithdrawalOrDepositResponse> withdrawal(@RequestBody @Valid WithdrawalOrDepositRequestDTO withdrawalRequestDTO) {
+        return ResponseEntity.ok(walletService.withdrawal(withdrawalRequestDTO));
     }
 
     @DeleteMapping(path = "/{id}")

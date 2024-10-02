@@ -3,6 +3,8 @@ package com.projeto.picpay.controller;
 import com.projeto.picpay.domain.Transfer;
 import com.projeto.picpay.requests.TransferPostRequestBody;
 import com.projeto.picpay.requests.TransferPutRequestBody;
+import com.projeto.picpay.requests.WithdrawalOrDepositRequestDTO;
+import com.projeto.picpay.requests.WithdrawalOrDepositResponse;
 import com.projeto.picpay.service.TransferService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 

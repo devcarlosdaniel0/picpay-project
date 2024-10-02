@@ -8,6 +8,8 @@ import com.projeto.picpay.mapper.WalletMapper;
 import com.projeto.picpay.repository.WalletRepository;
 import com.projeto.picpay.requests.WalletPostRequestBody;
 import com.projeto.picpay.requests.WalletPutRequestBody;
+import com.projeto.picpay.requests.WithdrawalOrDepositRequestDTO;
+import com.projeto.picpay.requests.WithdrawalOrDepositResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +37,34 @@ public class WalletService {
 
         Wallet wallet = WalletMapper.INSTANCE.toWallet(walletPostRequestBody);
         return walletRepository.save(wallet);
+    }
+
+    public WithdrawalOrDepositResponse deposit(WithdrawalOrDepositRequestDTO requestDTO) {
+        Wallet walletDB = findByIdOrThrowWalletIdNotFoundException(requestDTO.walletID());
+
+        walletDB.setBalance(walletDB.getBalance().add(requestDTO.value()));
+
+        return saveWalletAndCreateResponse(requestDTO, walletDB);
+    }
+
+    public WithdrawalOrDepositResponse withdrawal(WithdrawalOrDepositRequestDTO requestDTO) {
+        Wallet walletDB = findByIdOrThrowWalletIdNotFoundException(requestDTO.walletID());
+
+        walletDB.setBalance(walletDB.getBalance().subtract(requestDTO.value()));
+
+        return saveWalletAndCreateResponse(requestDTO, walletDB);
+    }
+
+    private WithdrawalOrDepositResponse saveWalletAndCreateResponse(WithdrawalOrDepositRequestDTO requestDTO, Wallet walletDB) {
+        walletRepository.save(walletDB);
+
+        WithdrawalOrDepositResponse response = WithdrawalOrDepositResponse.builder()
+                .balance(walletDB.getBalance())
+                .value(requestDTO.value())
+                .walletID(requestDTO.walletID())
+                .build();
+
+        return response;
     }
 
     /**
