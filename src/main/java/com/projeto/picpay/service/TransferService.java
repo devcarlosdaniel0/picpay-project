@@ -5,12 +5,13 @@ import com.projeto.picpay.domain.Wallet;
 import com.projeto.picpay.exception.*;
 import com.projeto.picpay.mapper.TransferMapper;
 import com.projeto.picpay.repository.TransferRepository;
-import com.projeto.picpay.requests.*;
+import com.projeto.picpay.requests.TransferPostRequestBody;
+import com.projeto.picpay.requests.TransferPutRequestBody;
+import com.projeto.picpay.requests.TransferRequestBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
