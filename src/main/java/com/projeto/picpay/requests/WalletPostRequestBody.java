@@ -3,9 +3,11 @@ package com.projeto.picpay.requests;
 import com.projeto.picpay.domain.WalletType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
 import java.math.BigDecimal;
 
+@Builder
 public record WalletPostRequestBody(
         @NotBlank
         String fullName,

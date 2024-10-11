@@ -1,6 +1,5 @@
 package com.projeto.picpay.requests;
 
-import com.projeto.picpay.domain.Wallet;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
