@@ -18,3 +18,8 @@ logging:
       hibernate:
         SQL: debug
         type: trace
+
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET:my-secret-key}

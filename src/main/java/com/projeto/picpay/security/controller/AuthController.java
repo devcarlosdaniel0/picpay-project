@@ -1,9 +1,12 @@
 package com.projeto.picpay.security.controller;
 
+import com.projeto.picpay.exception.UsernameAlreadyExistsException;
 import com.projeto.picpay.security.domain.User;
 import com.projeto.picpay.security.dto.AuthDTO;
+import com.projeto.picpay.security.dto.LoginResponseDTO;
 import com.projeto.picpay.security.dto.SignupDTO;
 import com.projeto.picpay.security.repository.UserRepository;
+import com.projeto.picpay.security.service.TokenService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,19 +26,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
-    
+    private final TokenService tokenService;
+
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody @Valid AuthDTO authDTO) {
+    public ResponseEntity login(@RequestBody @Valid AuthDTO authDTO) {
         UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(authDTO.username(), authDTO.password());
         Authentication auth = authenticationManager.authenticate(usernamePassword);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        String token = tokenService.generateToken((User) auth.getPrincipal());
+
+        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Void> signup(@RequestBody @Valid SignupDTO signupDTO) {
-        //TODO CRIAR UMA EXCEÇÃO PERSONALIZADA PARA USUÁRIO JÁ CADASTRADO
-        if (userRepository.findByUsername(signupDTO.username()) != null) throw new RuntimeException("User already exists!");
+    public ResponseEntity signup(@RequestBody @Valid SignupDTO signupDTO) {
+        if (userRepository.findByUsername(signupDTO.username()) != null) throw new UsernameAlreadyExistsException();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(signupDTO.password());
 
